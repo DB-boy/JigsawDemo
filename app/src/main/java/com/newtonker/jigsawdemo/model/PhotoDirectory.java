@@ -3,8 +3,7 @@ package com.newtonker.jigsawdemo.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhotoDirectory
-{
+public class PhotoDirectory {
     private String id;
     private String coverPath;
     private String name;
@@ -12,101 +11,82 @@ public class PhotoDirectory
     private List<Photo> photos = new ArrayList<>();
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (!(o instanceof PhotoDirectory))
-        {
+        if (!(o instanceof PhotoDirectory)) {
             return false;
         }
 
         PhotoDirectory directory = (PhotoDirectory) o;
 
-        if (!id.equals(directory.id))
-        {
+        if (!id.equals(directory.id)) {
             return false;
         }
         return name.equals(directory.name);
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + name.hashCode();
         return result;
     }
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
-    public void setId(String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getCoverPath()
-    {
+    public String getCoverPath() {
         return coverPath;
     }
 
-    public void setCoverPath(String coverPath)
-    {
+    public void setCoverPath(String coverPath) {
         this.coverPath = coverPath;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public long getDateAdded()
-    {
+    public long getDateAdded() {
         return dateAdded;
     }
 
-    public void setDateAdded(long dateAdded)
-    {
+    public void setDateAdded(long dateAdded) {
         this.dateAdded = dateAdded;
     }
 
-    public List<Photo> getPhotos()
-    {
+    public List<Photo> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(List<Photo> photos)
-    {
+    public void setPhotos(List<Photo> photos) {
         this.photos = photos;
     }
 
-    public List<String> getPhotoPaths()
-    {
+    public List<String> getPhotoPaths() {
         List<String> paths = new ArrayList<>(photos.size());
-        for (Photo photo : photos)
-        {
+        for (Photo photo : photos) {
             paths.add(photo.getPath());
         }
         return paths;
     }
 
-    public void addPhoto(int id, String path)
-    {
+    public void addPhoto(int id, String path) {
         photos.add(new Photo(id, path));
     }
 
-    public int getPhotoNums()
-    {
+    public int getPhotoNums() {
         return null == photos ? 0 : photos.size();
     }
 }

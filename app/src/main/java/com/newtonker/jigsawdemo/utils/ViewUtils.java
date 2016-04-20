@@ -5,20 +5,16 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-public class ViewUtils
-{
+public class ViewUtils {
     /**
      * 动画将视图显示
      */
-    public static void viewFadeIn(Context c, View view, int duration)
-    {
-        if(View.VISIBLE == view.getVisibility())
-        {
+    public static void viewFadeIn(Context c, View view, int duration) {
+        if (View.VISIBLE == view.getVisibility()) {
             return;
         }
 
-        if (duration != 0)
-        {
+        if (duration != 0) {
             Animation fadeAnimation = AnimationUtils.loadAnimation(c, android.R.anim.fade_in);
             fadeAnimation.setDuration(duration);
             view.startAnimation(fadeAnimation);
@@ -32,10 +28,8 @@ public class ViewUtils
      * view     将view隐藏
      * duration 动画时长
      */
-    public static void viewFadeOut(Context c, View view, int duration)
-    {
-        if (duration != 0 && view.getVisibility() == View.VISIBLE)
-        {
+    public static void viewFadeOut(Context c, View view, int duration) {
+        if (duration != 0 && view.getVisibility() == View.VISIBLE) {
             Animation fadeAnimation = AnimationUtils.loadAnimation(c, android.R.anim.fade_out);
             fadeAnimation.setDuration(duration);
             view.startAnimation(fadeAnimation);

@@ -1,29 +1,23 @@
 package com.newtonker.jigsawdemo.model;
 
-public class Photo
-{
+public class Photo {
     private int id;
     private String path;
 
-    public Photo(int id, String path)
-    {
+    public Photo(int id, String path) {
         this.id = id;
         this.path = path;
     }
 
-    public Photo()
-    {
+    public Photo() {
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (!(o instanceof Photo))
-        {
+        if (!(o instanceof Photo)) {
             return false;
         }
 
@@ -33,28 +27,23 @@ public class Photo
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return id;
     }
 
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
-    public void setPath(String path)
-    {
+    public void setPath(String path) {
         this.path = path;
     }
 
-    public int getId()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId(int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 }

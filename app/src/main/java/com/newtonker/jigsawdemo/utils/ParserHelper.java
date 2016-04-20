@@ -15,59 +15,41 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ParserHelper
-{
+public class ParserHelper {
     private static HashMap<JigsawType, List<TemplateEntity>> mEntityHashMap;
 
     private static ParserHelper instance;
 
-    private ParserHelper(Context context)
-    {
+    private ParserHelper(Context context) {
         init(context);
     }
 
-    public static ParserHelper getInstance(Context context)
-    {
-        if(null == instance)
-        {
+    public static ParserHelper getInstance(Context context) {
+        if (null == instance) {
             instance = new ParserHelper(context.getApplicationContext());
         }
 
         return instance;
     }
 
-    public static void init(Context context)
-    {
-        try
-        {
+    public static void init(Context context) {
+        try {
             mEntityHashMap = parseXml(context.getAssets().open("templates.xml"));
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public List<TemplateEntity> getEntityList(JigsawType type)
-    {
-        if(null == mEntityHashMap)
-        {
-            return null;
-        }
-
-        return mEntityHashMap.get(type);
-    }
-
     /**
      * 解析xml
+     *
      * @param is
+     *
      * @return
      */
-    private static HashMap<JigsawType, List<TemplateEntity>> parseXml(InputStream is)
-    {
+    private static HashMap<JigsawType, List<TemplateEntity>> parseXml(InputStream is) {
         List<TemplateEntity> entityList = new ArrayList<>();
-        try
-        {
+        try {
             TemplateEntity entity = null;
 
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -76,51 +58,42 @@ public class ParserHelper
             parser.setInput(is, "utf-8");
             int eventType = parser.getEventType();
 
-            while (eventType != XmlPullParser.END_DOCUMENT)
-            {
-                switch (eventType)
-                {
-                case XmlPullParser.START_TAG:
-                    String tagName = parser.getName();
-                    if (null != tagName && tagName.equals("layout"))
-                    {
-                        entity = new TemplateEntity();
-                        int numOfSlots = Integer.parseInt(parser.getAttributeValue(null, "numOfSlots"));
-                        entity.setNumOfSlots(numOfSlots);
-                    }
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                switch (eventType) {
+                    case XmlPullParser.START_TAG:
+                        String tagName = parser.getName();
+                        if (null != tagName && tagName.equals("layout")) {
+                            entity = new TemplateEntity();
+                            int numOfSlots = Integer.parseInt(parser.getAttributeValue(null, "numOfSlots"));
+                            entity.setNumOfSlots(numOfSlots);
+                        }
 
-                    if(null != tagName && tagName.equals("id") && null != entity)
-                    {
-                        String id = parser.nextText();
-                        entity.setId(Integer.parseInt(id));
-                    }
+                        if (null != tagName && tagName.equals("id") && null != entity) {
+                            String id = parser.nextText();
+                            entity.setId(Integer.parseInt(id));
+                        }
 
-                    if(null != tagName && tagName.equals("points") && null != entity)
-                    {
-                        String points = parser.nextText();
-                        entity.setPoints(points);
-                    }
+                        if (null != tagName && tagName.equals("points") && null != entity) {
+                            String points = parser.nextText();
+                            entity.setPoints(points);
+                        }
 
-                    if(null != tagName && tagName.equals("polygons") && null != entity)
-                    {
-                        String polygons = parser.nextText();
-                        entity.setPolygons(polygons);
-                    }
-                    break;
-                case XmlPullParser.END_TAG:
-                    if(parser.getName().equals("layout"))
-                    {
-                        entityList.add(entity);
-                    }
-                    break;
-                default:
-                    break;
+                        if (null != tagName && tagName.equals("polygons") && null != entity) {
+                            String polygons = parser.nextText();
+                            entity.setPolygons(polygons);
+                        }
+                        break;
+                    case XmlPullParser.END_TAG:
+                        if (parser.getName().equals("layout")) {
+                            entityList.add(entity);
+                        }
+                        break;
+                    default:
+                        break;
                 }
                 eventType = parser.next();
             }
-        }
-        catch (XmlPullParserException | IOException e)
-        {
+        } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -133,24 +106,22 @@ public class ParserHelper
         List<TemplateEntity> tempList2 = new ArrayList<>();
         List<TemplateEntity> tempList3 = new ArrayList<>();
 
-        for(TemplateEntity temp : entityList)
-        {
-            switch(temp.getNumOfSlots())
-            {
-            case 1:
-                tempList0.add(temp);
-                break;
-            case 2:
-                tempList1.add(temp);
-                break;
-            case 3:
-                tempList2.add(temp);
-                break;
-            case 4:
-                tempList3.add(temp);
-                break;
-            default:
-                break;
+        for (TemplateEntity temp : entityList) {
+            switch (temp.getNumOfSlots()) {
+                case 1:
+                    tempList0.add(temp);
+                    break;
+                case 2:
+                    tempList1.add(temp);
+                    break;
+                case 3:
+                    tempList2.add(temp);
+                    break;
+                case 4:
+                    tempList3.add(temp);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -161,5 +132,13 @@ public class ParserHelper
         hashMap.put(JigsawType.FOUR_PHOTO, tempList3);
 
         return hashMap;
+    }
+
+    public List<TemplateEntity> getEntityList(JigsawType type) {
+        if (null == mEntityHashMap) {
+            return null;
+        }
+
+        return mEntityHashMap.get(type);
     }
 }

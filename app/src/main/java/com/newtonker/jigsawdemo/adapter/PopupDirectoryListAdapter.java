@@ -15,14 +15,12 @@ import com.newtonker.jigsawdemo.model.PhotoDirectory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PopupDirectoryListAdapter extends BaseAdapter
-{
+public class PopupDirectoryListAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater mLayoutInflater;
     private List<PhotoDirectory> directories = new ArrayList<>();
 
-    public PopupDirectoryListAdapter(Context context, List<PhotoDirectory> directories)
-    {
+    public PopupDirectoryListAdapter(Context context, List<PhotoDirectory> directories) {
         this.context = context;
         this.directories = directories;
 
@@ -30,35 +28,28 @@ public class PopupDirectoryListAdapter extends BaseAdapter
     }
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return directories.size();
     }
 
     @Override
-    public PhotoDirectory getItem(int position)
-    {
+    public PhotoDirectory getItem(int position) {
         return directories.get(position);
     }
 
     @Override
-    public long getItemId(int position)
-    {
+    public long getItemId(int position) {
         return directories.get(position).hashCode();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
+    public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        if (convertView == null)
-        {
+        if (convertView == null) {
             convertView = mLayoutInflater.inflate(R.layout.item_directory, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-        }
-        else
-        {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -67,21 +58,18 @@ public class PopupDirectoryListAdapter extends BaseAdapter
         return convertView;
     }
 
-    private class ViewHolder
-    {
+    private class ViewHolder {
         public ImageView coverImage;
         public TextView dirName;
         public TextView dirNum;
 
-        public ViewHolder(View rootView)
-        {
+        public ViewHolder(View rootView) {
             coverImage = (ImageView) rootView.findViewById(R.id.dir_cover_image);
             dirName = (TextView) rootView.findViewById(R.id.dir_name);
             dirNum = (TextView) rootView.findViewById(R.id.dir_num);
         }
 
-        public void bindData(PhotoDirectory directory)
-        {
+        public void bindData(PhotoDirectory directory) {
             Glide.with(context).load(directory.getCoverPath()).thumbnail(0.1f).into(coverImage);
             dirName.setText(directory.getName());
             dirNum.setText(String.valueOf(directory.getPhotoNums()));

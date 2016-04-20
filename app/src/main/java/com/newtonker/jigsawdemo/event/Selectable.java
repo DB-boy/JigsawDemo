@@ -4,12 +4,13 @@ import com.newtonker.jigsawdemo.model.Photo;
 
 import java.util.List;
 
-public interface Selectable
-{
+public interface Selectable {
     /**
      * Indicates if the item at position position is selected
      *
-     * @param photo JigsawPhoto of the item to check
+     * @param photo
+     *         JigsawPhoto of the item to check
+     *
      * @return true if the item is selected, false otherwise
      */
     boolean isSelected(Photo photo);
@@ -17,7 +18,8 @@ public interface Selectable
     /**
      * Toggle the selection status of the item at a given position
      *
-     * @param photo JigsawPhoto of the item to toggle the selection status for
+     * @param photo
+     *         JigsawPhoto of the item to toggle the selection status for
      */
     void toggleSelection(Photo photo);
 

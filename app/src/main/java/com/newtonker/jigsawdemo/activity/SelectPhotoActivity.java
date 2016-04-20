@@ -13,7 +13,6 @@ import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,15 +39,13 @@ import java.util.List;
 /**
  * 选择图片生成模版Activity
  */
-public class SelectPhotoActivity extends AppCompatActivity
-{
-    private static final int WRITE_REQUEST_CODE = 2909;
-
+public class SelectPhotoActivity extends AppCompatActivity {
     // 拼图最多可用图片张数
     public final static int DEFAULT_MAX_COUNT = 4;
     public final static String SELECTED_PATHS = "selected_paths";
     public final static String TYPE_OF_JIGSAW = "type_of_jigsaw";
     public final static String ID_OF_TEMPLATE = "id_of_template";
+    private static final int WRITE_REQUEST_CODE = 2909;
     // 当前拼图模板的类型
     private JigsawType jigsawType;
     // 最多可用图片数目
@@ -64,42 +61,32 @@ public class SelectPhotoActivity extends AppCompatActivity
     private ArrayList<String> selectedPhotosPath;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_photo);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            if (!Settings.System.canWrite(this))
-            {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.System.canWrite(this)) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, WRITE_REQUEST_CODE);
-            }
-            else
-            {
+            } else {
                 // continue with your code
                 init();
             }
-        }
-        else
-        {
+        } else {
             // continue with your code
             init();
         }
 
     }
 
-    private void init()
-    {
+    private void init() {
         // 初始化
         directories = new ArrayList<>();
         selectedPhotosPath = new ArrayList<>();
 
-        MediaStoreHelper.getPhotoDirs(this, new MediaStoreHelper.PhotosResultCallback()
-        {
+        MediaStoreHelper.getPhotoDirs(this, new MediaStoreHelper.PhotosResultCallback() {
             @Override
-            public void onResultCallback(List<PhotoDirectory> directories)
-            {
+            public void onResultCallback(List<PhotoDirectory> directories) {
                 SelectPhotoActivity.this.directories.clear();
                 SelectPhotoActivity.this.directories.addAll(directories);
                 photoGridAdapter.notifyDataSetChanged();
@@ -112,26 +99,22 @@ public class SelectPhotoActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
-        switch (requestCode)
-        {
-        case WRITE_REQUEST_CODE:
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
-            {
-                init();
-            }
-            break;
-        default:
-            break;
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case WRITE_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    init();
+                }
+                break;
+            default:
+                break;
         }
     }
 
     /**
      * 初始化界面
      */
-    private void initView()
-    {
+    private void initView() {
         // 拼图模板展示区
         RecyclerView modelRecyclerView = (RecyclerView) findViewById(R.id.model_area);
         // 适配器
@@ -139,11 +122,9 @@ public class SelectPhotoActivity extends AppCompatActivity
         modelRecyclerView.setHasFixedSize(true);
         modelLinearAdapter = new ModelLinearAdapter(this);
         modelRecyclerView.setAdapter(modelLinearAdapter);
-        modelLinearAdapter.setOnModelItemClickListener(new OnModelItemClickListener()
-        {
+        modelLinearAdapter.setOnModelItemClickListener(new OnModelItemClickListener() {
             @Override
-            public void onClick(View view, int position)
-            {
+            public void onClick(View view, int position) {
                 // 跳转到另一个界面去操作
                 Intent intent = new Intent(SelectPhotoActivity.this, JigsawModelActivity.class);
                 intent.putStringArrayListExtra(SELECTED_PATHS, selectedPhotosPath);
@@ -162,26 +143,21 @@ public class SelectPhotoActivity extends AppCompatActivity
         photoGridAdapter = new PhotoGridAdapter(this, directories);
         photoRecyclerView.setAdapter(photoGridAdapter);
         photoRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        photoGridAdapter.setOnItemCheckListener(new OnItemCheckListener()
-        {
+        photoGridAdapter.setOnItemCheckListener(new OnItemCheckListener() {
             @Override
-            public boolean OnItemCheck(int position, Photo path, boolean isCheck, int selectedItemCount)
-            {
+            public boolean OnItemCheck(int position, Photo path, boolean isCheck, int selectedItemCount) {
                 int total = selectedItemCount + (isCheck ? -1 : 1);
 
-                if (total > maxCount)
-                {
+                if (total > maxCount) {
                     Toast.makeText(SelectPhotoActivity.this, getString(R.string.over_max_count_tips, maxCount), Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 return true;
             }
         });
-        photoGridAdapter.setOnPhotoCheckedChangeListener(new OnPhotoCheckedChangeListener()
-        {
+        photoGridAdapter.setOnPhotoCheckedChangeListener(new OnPhotoCheckedChangeListener() {
             @Override
-            public void onCheckedChange(ArrayList<String> paths)
-            {
+            public void onCheckedChange(ArrayList<String> paths) {
                 selectedPhotosPath.clear();
                 // 获取所选图片的路径
                 selectedPhotosPath.addAll(paths);
@@ -208,28 +184,21 @@ public class SelectPhotoActivity extends AppCompatActivity
         listPopupWindow.setDropDownGravity(Gravity.BOTTOM);
         listPopupWindow.setAnimationStyle(R.style.Animation_AppCompat_DropDownUp);
 
-        btSwitchDirectory.setOnClickListener(new View.OnClickListener()
-        {
+        btSwitchDirectory.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if (listPopupWindow.isShowing())
-                {
+            public void onClick(View v) {
+                if (listPopupWindow.isShowing()) {
                     listPopupWindow.dismiss();
-                }
-                else if (!isFinishing())
-                {
+                } else if (!isFinishing()) {
                     listPopupWindow.setHeight(Math.round(photoRecyclerView.getHeight()));
                     listPopupWindow.show();
                 }
             }
         });
 
-        listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listPopupWindow.dismiss();
                 PhotoDirectory directory = directories.get(position);
                 btSwitchDirectory.setText(directory.getName());

@@ -8,98 +8,81 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-
 import com.newtonker.jigsawdemo.R;
 import com.newtonker.jigsawdemo.event.OnItemClickListener;
 import com.newtonker.jigsawdemo.model.PopupFilterItem;
 
 import java.util.List;
 
-public class JigsawPopupAdapter extends RecyclerView.Adapter<JigsawPopupAdapter.ViewHolder>
-{
+public class JigsawPopupAdapter extends RecyclerView.Adapter<JigsawPopupAdapter.ViewHolder> {
     private int curSelection = 0;
     private LayoutInflater inflater;
     private List<PopupFilterItem> list;
     private OnItemClickListener onItemClickListener;
 
-    public JigsawPopupAdapter(Context context, List<PopupFilterItem> list)
-    {
+    public JigsawPopupAdapter(Context context, List<PopupFilterItem> list) {
         this.list = list;
         inflater = LayoutInflater.from(context);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = inflater.inflate(R.layout.item_jigsaw_filter, parent, false);
 
         return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position)
-    {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         PopupFilterItem filterItem = list.get(position);
         holder.frameLayout.setBackgroundResource(filterItem.getFilterItem().getColorId());
         holder.imageView.setImageBitmap(filterItem.getBitmap());
 
-        holder.imageView.setOnClickListener(new View.OnClickListener()
-        {
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 curSelection = position;
                 notifyDataSetChanged();
 
-                if(null != onItemClickListener)
-                {
+                if (null != onItemClickListener) {
                     onItemClickListener.onItemClick(v, position);
                 }
             }
         });
 
-        if(curSelection == position)
-        {
+        if (curSelection == position) {
             holder.frameLayout.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             holder.frameLayout.setVisibility(View.INVISIBLE);
         }
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return null == list ? 0 : list.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public void setSelection(int position) {
+        curSelection = position;
+    }
+
+    public void setList(List<PopupFilterItem> list) {
+        this.list = list;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView;
         private FrameLayout frameLayout;
 
-        public ViewHolder(View itemView)
-        {
+        public ViewHolder(View itemView) {
             super(itemView);
 
             frameLayout = (FrameLayout) itemView.findViewById(R.id.item_jigsaw_filter_layout);
             imageView = (ImageView) itemView.findViewById(R.id.item_jigsaw_filter_image);
         }
-    }
-
-    public void setSelection(int position)
-    {
-        curSelection = position;
-    }
-
-    public void setList(List<PopupFilterItem> list)
-    {
-        this.list = list;
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener)
-    {
-        this.onItemClickListener = onItemClickListener;
     }
 }

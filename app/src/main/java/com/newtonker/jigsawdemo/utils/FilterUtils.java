@@ -16,12 +16,10 @@ import jp.co.cyberagent.android.gpuimage.GPUImagePixelationFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageSepiaFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageToonFilter;
 
-public class FilterUtils
-{
+public class FilterUtils {
     private static List<FilterItem> filterLists = new ArrayList<>();
 
-    static
-    {
+    static {
         filterLists.add(new FilterItem(new GPUImageFilter(), R.color.filter_color0));
         filterLists.add(new FilterItem(new GPUImageSepiaFilter(), R.color.filter_color1));
         filterLists.add(new FilterItem(new GPUImageGrayscaleFilter(), R.color.filter_color2));
@@ -33,8 +31,7 @@ public class FilterUtils
         filterLists.add(new FilterItem(new GPUImageToonFilter(), R.color.filter_color8));
     }
 
-    public static List<FilterItem> getFilterLists()
-    {
+    public static List<FilterItem> getFilterLists() {
         return filterLists;
     }
 }
